@@ -21,7 +21,7 @@ const DashboardComp = (props) => {
 
   const handleClick = (e) => {
     setSelectedItem(e.target.innerText);
-    // console.log(e.currentTarget.id);
+    console.log(e);
 
     handleSidebarState(e.currentTarget.id);
   };
@@ -29,7 +29,7 @@ const DashboardComp = (props) => {
   const handleSidebarState = (e) => {
     setSidebarState(sidebarState === "closed" ? "open" : "closed");
     let currentTarget = e;
-    // console.log(currentTarget);
+    console.log(currentTarget);
 
     if (sidebarState === "closed") {
       setSelectedItem(currentTarget);
@@ -46,7 +46,11 @@ const DashboardComp = (props) => {
 
   return (
     <div>
-      <ProSidebar>
+      <ProSidebar
+        onToggle={(e) => {
+          handleClick(e);
+        }}
+      >
         <SidebarHeader>
           <div className="logo">
             <Heart />
@@ -55,13 +59,21 @@ const DashboardComp = (props) => {
         </SidebarHeader>
         <SidebarContent>
           <Menu>
-            <MenuItem id="nav_dashboard" onClick={handleClick}>
+            <MenuItem
+            // id="nav_dashboard"
+            // active={selectedItem == "nav_dashboard" ? true : false}
+            // onClick={handleClick}
+            >
               <a href="#">
                 <Heart />
                 <span>Dashboard</span>
               </a>
             </MenuItem>
-            <MenuItem>
+            <MenuItem
+            // id="nav_profile"
+            // active={selectedItem == "nav_profile" ? true : false}
+            // onClick={handleClick}
+            >
               <a href="#">
                 <Heart />
                 <span>Sub 1</span>
@@ -73,8 +85,17 @@ const DashboardComp = (props) => {
                 <span>Sub 2</span>
               </a>
             </MenuItem>
-            <SubMenu title="Sub 3">
-              <MenuItem>
+            <SubMenu
+              title="Sub 3"
+              id="nav_sub_3"
+              open={selectedItem == "nav_sub_3" ? true : false}
+              onClick={handleClick}
+            >
+              <MenuItem
+                id="nav_sub_3"
+                // active={selectedItem == "nav_sub_3" ? true : false}
+                onClick={handleClick}
+              >
                 <a href="#">
                   <Heart />
                   <span>Sub 3</span>
@@ -101,7 +122,7 @@ const DashboardComp = (props) => {
         </SidebarContent>
         <SidebarFooter>
           <div className="copyright">
-            <span>Copyright © 2019</span>
+            <span>Copyright © 2022</span>
 
             <a href="#">
               <Heart />
