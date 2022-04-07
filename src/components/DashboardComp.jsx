@@ -1,58 +1,61 @@
 import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
-// import {
-//   HomeDashComp,
-//   LoginComp,
-//   NavbarDashComp,
-//   SidebarDashComp,
-// } from "../components";
-// import { useSelector } from "react-redux";
-// import { Row, Col, Accordion } from "react-bootstrap";
+// material
+import { styled } from "@mui/material/styles";
+import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
+import MuiAccordion from "@mui/material/Accordion";
+import MuiAccordionSummary from "@mui/material/AccordionSummary";
+import MuiAccordionDetails from "@mui/material/AccordionDetails";
+import Typography from "@mui/material/Typography";
 
-// assets
-// import { LogoDashboard } from "../assets";
+// icons
+import { HiAcademicCap } from "react-icons/hi";
 
 // style
 import "../styles/Dashboard.css"; // Dashboard.css
-import { HiChevronDown, HiDatabase } from "react-icons/hi";
 
+const Accordion = styled((props) => (
+  <MuiAccordion disableGutters elevation={0} square {...props} />
+))(({ theme }) => ({
+  border: `1px solid ${theme.palette.divider}`,
+  "&:not(:last-child)": {
+    borderBottom: 0,
+  },
+  "&:before": {
+    display: "none",
+  },
+}));
+
+const AccordionSummary = styled((props) => (
+  <MuiAccordionSummary
+    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />}
+    {...props}
+  />
+))(({ theme }) => ({
+  backgroundColor:
+    theme.palette.mode === "dark"
+      ? "rgba(255, 255, 255, .05)"
+      : "rgba(0, 0, 0, .03)",
+  flexDirection: "row",
+  "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
+    transform: "rotate(90deg)",
+  },
+  "& .MuiAccordionSummary-content": {
+    marginLeft: theme.spacing(1),
+  },
+}));
+
+const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+  padding: theme.spacing(2),
+  borderTop: "1px solid rgba(0, 0, 0, .125)",
+}));
+
+// deafults function
 const DashboardView = () => {
-  // const auth = useSelector((state) => state.auth);
-  const [isOpen, setIsOpen] = useState(false);
-  const [elActive, setElActive] = useState(false);
-  // console.log(auth);
+  const [expanded, setExpanded] = useState("panel1");
 
-  const handleClick = (el) => {
-    setIsOpen(!isOpen);
-    const parent = el.target.parentElement;
-    const children = parent.children;
-    setElActive(parent);
-    console.log(elActive.className);
-
-    closeAllAccordions(elActive);
-
-    togglefunction(parent, children);
-  };
-
-  const closeAllAccordions = (el) => {
-    setIsOpen(false);
-    // close all accordions
-    const accordions = document.getElementsByClassName("accordion");
-    // console.log(accordions.accordion.children);
-    const accordionChildren = accordions.accordion.children;
-    for (let i = 0; i < accordionChildren.length; i++) {
-      // console.log(accordionChildren[i].className);
-      // console.log(accordionChildren[i].children[1]);
-      // if (accordionChildren[i].className !== el.className) {
-      accordionChildren[i].classList.remove("open");
-      accordionChildren[i].children[1].classList.add("collapsed");
-      // }
-    }
-  };
-
-  const togglefunction = (parent, children) => {
-    parent.classList.toggle("open");
-    children[1].classList.toggle("collapsed");
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
   };
 
   return (
@@ -64,96 +67,46 @@ const DashboardView = () => {
         <a href="#news">News</a>
         <a href="#contact">Contact</a>
         <a href="#about">About</a>
-        <ul id="accordion" className="accordion">
-          <li>
-            <div className="link" onClick={handleClick}>
-              <span>
-                <HiDatabase />
-              </span>
-              Web Design
-              <span className="icon-chevrondown">
-                <HiChevronDown />
-              </span>
-            </div>
-            <ul className="submenu collapsed">
-              <li>
-                <a href="#">Photoshop</a>
-              </li>
-              <li>
-                <a href="#">HTML</a>
-              </li>
-              <li>
-                <a href="#">CSS</a>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <div className="link" onClick={handleClick}>
-              <span>
-                <HiDatabase />
-              </span>
-              Coding
-              <span className="icon-chevrondown">
-                <HiChevronDown />
-              </span>
-            </div>
-            <ul className="submenu collapsed">
-              <li>
-                <a href="#">Javascript</a>
-              </li>
-              <li>
-                <a href="#">jQuery</a>
-              </li>
-              <li>
-                <a href="#">Ruby</a>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <div className="link" onClick={handleClick}>
-              <span>
-                <HiDatabase />
-              </span>
-              Devices
-              <span className="icon-chevrondown">
-                <HiChevronDown />
-              </span>
-            </div>
-            <ul className="submenu collapsed">
-              <li>
-                <a href="#">Tablet</a>
-              </li>
-              <li>
-                <a href="#">Mobile</a>
-              </li>
-              <li>
-                <a href="#">Desktop</a>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <div className="link" onClick={handleClick}>
-              <span>
-                <HiDatabase />
-              </span>
-              Global
-              <span className="icon-chevrondown">
-                <HiChevronDown />
-              </span>
-            </div>
-            <ul className="submenu collapsed">
-              <li>
-                <a href="#">Google</a>
-              </li>
-              <li>
-                <a href="#">Bing</a>
-              </li>
-              <li>
-                <a href="#">Yahoo</a>
-              </li>
-            </ul>
-          </li>
-        </ul>
+        <Accordion
+          expanded={expanded === "panel1"}
+          onChange={handleChange("panel1")}
+        >
+          <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+            <span>
+              <HiAcademicCap />
+            </span>
+            <Typography>Sekolah Bre</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
+              eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
+              eget.
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion
+          expanded={expanded === "panel2"}
+          onChange={handleChange("panel2")}
+        >
+          <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
+            <span>
+              <HiAcademicCap />
+            </span>
+            <Typography>Sekolah Bre</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
+              eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
+              eget.
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
       </div>
       <div className="content">
         <h2>Responsive Sidebar Example</h2>
